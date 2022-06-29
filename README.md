@@ -1,2 +1,2 @@
 
- ![screenshot](/public/images/Web capture.jpeg?raw=true "preview")
+ ![screenshot](./public/images/Web capture.jpeg)
