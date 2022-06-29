@@ -1,2 +1,2 @@
 
- ![Alt text](/relative/path/to/img.jpg?raw=true "Web capture")
+ ![screenshot](./public/images/Web capture.jpeg?raw=true "preview")
