@@ -3,34 +3,64 @@ import React from 'react';
 import {nanoid} from "nanoid"
 import Confetti from "react-confetti"
 
+
 export default  function App() {
+  const imgArray=["./images/1.png","./images/2.png","./images/3.png","./images/4.png","./images/5.png","./images/6.png"]
+
 
 const [numArray,setNumArray]= React.useState(allNewDice())
 const [tenzies, setTenzies]= React.useState(false)
+const [number, setNumber]= React.useState(JSON.parse(localStorage.getItem("number"))  || 0)
+const [startTime, setStartTime]= React.useState(JSON.parse(localStorage.getItem("startTime"))  || Date.parse(new Date()))
+const [endTime, setEndTime]= React.useState(0)
 
 React.useEffect(()=>{
-  numArray.every(die=>die.status)&& numArray.every(die=>die.value===numArray[0].value) ?setTenzies(true):setTenzies(false)
+  numArray.every(die=>die.status)&& numArray.every(die=>die.image===numArray[0].image) ?setTenzies(true):setTenzies(false)
 }, [numArray])
+
+React.useEffect(() => {
+  localStorage.setItem("number", JSON.stringify(number))
+}, [number]) 
+
+React.useEffect(() => {
+  localStorage.setItem("startTime", JSON.stringify(startTime))
+}, )      
+
+React.useEffect(() => {
+  setEndTime(Date.parse(new Date()))}, [numArray])    
 
 function allNewDice(){
   const Array=[]
 
   for(let i=0;i<10;i++){
-    Array.push({value:Math.floor((Math.random() * 6) + 1),status:false,id:nanoid()})    
+    Array.push({image:imgArray[Math.floor(Math.random() * 6) ],status:false,id:nanoid()})  
   }
+  console.log(Array)  
+
   return Array
 }
 
     function rollDice(){
       if(!tenzies){
+        setNumber(prev=>prev+1)
+  
+        console.log(startTime)
+        console.log(endTime)
         setNumArray(oldArray => oldArray.map(die => {
           return die.status===false?
-          {...die, value: Math.floor((Math.random() * 6) + 1), id:nanoid()}:
+          {...die, image: imgArray[Math.floor(Math.random() * 6) ], id:nanoid()}:
           die
         }))}
           else{
+            setNumber(0)
+            setStartTime(Date.parse(new Date()))
+            setEndTime(Date.parse(new Date()))
             setNumArray(allNewDice())
+            console.log(startTime)
+            console.log(endTime)
+
           }
+
     }
 
 
@@ -43,8 +73,8 @@ function allNewDice(){
   }
 
 
-const diceElements = numArray.map(die => <Die value={die.value} hold={()=>hold(die.id)} key={die.id} status={die.status}/>)
-
+const diceElements = numArray.map(die => <Die image={die.image} hold={()=>hold(die.id)} key={die.id} status={die.status}/>)
+// 
   return (
     <div className="App">
         {tenzies && <Confetti />}
@@ -55,6 +85,8 @@ const diceElements = numArray.map(die => <Die value={die.value} hold={()=>hold(d
           {diceElements}
         </div>
         <button onClick={rollDice} className="rollBtn">{tenzies?"New Game":"Roll"}</button>
+        <span>number of rolls: {number}</span>
+        <span>time used: {(endTime-startTime)/1000}</span>
       </main>
     </div>
   );
