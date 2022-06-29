@@ -1,2 +1,2 @@
 
- ![screenshot](./public/images/Web capture.jpeg)
+ ![screenshot](./public/images/Web\ capture.jpeg)
